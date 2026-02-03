@@ -1,15 +1,18 @@
 services:
-  flask-app:
+  user-service:
     build: .
-    ports:
-      - "8080:8080"
-    depends_on:
-      - redis-db
+    command: python user_app.py
 
-  redis-db:
-    image: "redis:alpine"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
+  order-service:
+    build: .
+    command: python order_app.py
+    depends_on:
+      - user-service
+
+  frontend:
+    build: .
+    command: python frontend_app.py
+    ports:
+      - "8080:5000"
+    depends_on:
+      - order-service
