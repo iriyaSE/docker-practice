@@ -1,17 +1,14 @@
 services:
   user-service:
-    build: .
-    command: python user_app.py
+    build: ./user
 
   order-service:
-    build: .
-    command: python order_app.py
+    build: ./order
     depends_on:
       - user-service
 
   frontend:
-    build: .
-    command: python frontend_app.py
+    build: ./frontend
     ports:
       - "8080:5000"
     depends_on:
